@@ -77,3 +77,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 }
 /* USER CODE END 2 */
+
+4.TIM2_LED
+利用TIM2的内部时钟中断实现led闪烁1s
+4.1配置PC13端口为输出
+4.2配置TIM2为内部时钟，预分频2000-1，计数周期10000（1s），使能中断。生成工程。
+4.3代码实现
