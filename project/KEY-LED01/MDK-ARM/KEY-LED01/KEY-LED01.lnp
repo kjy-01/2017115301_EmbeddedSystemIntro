@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp --branchpatch=sdcomp-29491-629360
+"key-led01\startup_stm32l431xx.o"
+"key-led01\main.o"
+"key-led01\gpio.o"
+"key-led01\stm32l4xx_it.o"
+"key-led01\stm32l4xx_hal_msp.o"
+"key-led01\stm32l4xx_hal_tim.o"
+"key-led01\stm32l4xx_hal_tim_ex.o"
+"key-led01\stm32l4xx_hal.o"
+"key-led01\stm32l4xx_hal_i2c.o"
+"key-led01\stm32l4xx_hal_i2c_ex.o"
+"key-led01\stm32l4xx_hal_rcc.o"
+"key-led01\stm32l4xx_hal_rcc_ex.o"
+"key-led01\stm32l4xx_hal_flash.o"
+"key-led01\stm32l4xx_hal_flash_ex.o"
+"key-led01\stm32l4xx_hal_flash_ramfunc.o"
+"key-led01\stm32l4xx_hal_gpio.o"
+"key-led01\stm32l4xx_hal_dma.o"
+"key-led01\stm32l4xx_hal_dma_ex.o"
+"key-led01\stm32l4xx_hal_pwr.o"
+"key-led01\stm32l4xx_hal_pwr_ex.o"
+"key-led01\stm32l4xx_hal_cortex.o"
+"key-led01\stm32l4xx_hal_exti.o"
+"key-led01\system_stm32l4xx.o"
+--library_type=microlib --nodebug --strict --scatter "KEY-LED01\KEY-LED01.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "KEY-LED01.map" -o KEY-LED01\KEY-LED01.axf

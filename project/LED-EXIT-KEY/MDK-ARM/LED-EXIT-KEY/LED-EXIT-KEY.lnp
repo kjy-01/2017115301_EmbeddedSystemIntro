@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp --branchpatch=sdcomp-29491-629360
+"led-exit-key\startup_stm32l431xx.o"
+"led-exit-key\main.o"
+"led-exit-key\gpio.o"
+"led-exit-key\stm32l4xx_it.o"
+"led-exit-key\stm32l4xx_hal_msp.o"
+"led-exit-key\stm32l4xx_hal_tim.o"
+"led-exit-key\stm32l4xx_hal_tim_ex.o"
+"led-exit-key\stm32l4xx_hal.o"
+"led-exit-key\stm32l4xx_hal_i2c.o"
+"led-exit-key\stm32l4xx_hal_i2c_ex.o"
+"led-exit-key\stm32l4xx_hal_rcc.o"
+"led-exit-key\stm32l4xx_hal_rcc_ex.o"
+"led-exit-key\stm32l4xx_hal_flash.o"
+"led-exit-key\stm32l4xx_hal_flash_ex.o"
+"led-exit-key\stm32l4xx_hal_flash_ramfunc.o"
+"led-exit-key\stm32l4xx_hal_gpio.o"
+"led-exit-key\stm32l4xx_hal_dma.o"
+"led-exit-key\stm32l4xx_hal_dma_ex.o"
+"led-exit-key\stm32l4xx_hal_pwr.o"
+"led-exit-key\stm32l4xx_hal_pwr_ex.o"
+"led-exit-key\stm32l4xx_hal_cortex.o"
+"led-exit-key\stm32l4xx_hal_exti.o"
+"led-exit-key\system_stm32l4xx.o"
+--library_type=microlib --strict --scatter "LED-EXIT-KEY\LED-EXIT-KEY.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "LED-EXIT-KEY.map" -o LED-EXIT-KEY\LED-EXIT-KEY.axf
