@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "name": "STM32",
+            "includePath": [
+                "${workspaceFolder}/**"
+                "E:/keil/123gj/MDK/ARM/ARMCLANG/include/**",
+                
+                ""
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+                "USE_HAL_DRIVER"
+                "STM32L431xx"
+            ],
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 4
+}
