@@ -77,3 +77,30 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     }
 }
 /* USER CODE END 2 */
+
+4.TIM2_LED
+利用TIM2的内部时钟中断实现led闪烁1s
+4.1配置PC13端口为输出
+4.2配置TIM2为内部时钟，预分频2000-1，计数周期10000（1s），使能中断。APBI提供时钟为20MHz，生成工程。
+4.3代码实现
+  1主函数内：
+  1、HAL_TIM_Base_Start_IT(&htim2);//触发TIM2中断定时器
+  2、while (1)
+  {
+    /* USER CODE BEGIN 3 */
+		HAL_Delay(8000);//延时8s--用于测试LED闪烁是否受延时影响
+  }
+  /* USER CODE END 3 */
+  2调用函数
+  /* USER CODE BEGIN 4 */
+ /*调用周期函数，定时1S中断，实现1s闪烁的效果*/
+ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+ {
+  //LED电平翻转
+  HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+
+ }
+ /* USER CODE END 4 */
+4.4运行结果
+TIM2的中断不受延时影响，实现1s中断LED闪烁。
+
