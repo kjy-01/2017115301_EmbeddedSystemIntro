@@ -104,3 +104,103 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 4.4运行结果
 TIM2的中断不受延时影响，实现1s中断LED闪烁。
 
+5、USART PROJECT
+普通收发模式
+1，选择芯片：stm32l431rc
+2，配置LED-PC13-gpio_output
+3，选择USART1 : mode-asynchronous   配置：115200或9600 
+4，配置系统时钟：80MHz
+5，gpio口-pc13默认，PA9发送引脚：默认，PA10接收引脚：默认。
+6，生成工程，MDK打开工程文件，编译，
+7，在stm32l4xx_hal_uart.h 的1609，1610
+HAL_UART_Transmit(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+HAL_UART_Receive(UART_HandleTypeDef *huart, uint8_t *pData, uint16_t Size, uint32_t Timeout);
+复制到main.c的while语句里（测试函数）
+	uint8_t Rdata;	
+    HAL_Delay(3000);
+    if(HAL_UART_Receive(&huart1, &Rdata, 1, 0)==HAL_OK)
+		{
+            HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+		    HAL_UART_Transmit(&huart1, &Rdata, 1, 0);
+		}
+8、在usart.c编写fputc函数：将数据打印到串口助手上。需加头文件stdio.h
+int fputc (int ch,FILE *f)
+{
+	uint8_t temp[1]={ch};
+	{
+		HAL_UART_Transmit(&huart1,temp,1,2);
+	}
+	return HAL_OK;
+}
+9、在主函数应用，注意先添加头文件stdio.h
+printf("welcome to usart1! \r\n");
+
+10、延时会影响串口收发信息。
+
+
+中断IRQ模式
+1、在普通模式上，使能串口中断 生成代码。
+2、宏定义
+#define UART1_IRQ
+uint8_t TdataIRQ[]={"welcome to UART1_IRQ"};
+3、
+#ifdef UART1_IRQ
+    if(HAL_UART_Receive_IT(&huart1, &Rdata, 1)==HAL_OK)
+		{
+		    HAL_UART_Transmit_IT(&huart1, TdataIRQ,sizeof(TdataIRQ));
+		}
+    #endif
+4、while里，测试函数
+	#ifdef UART1_IRQ
+		HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+	  printf("URAT1_IRQ test!\r\n ");
+		HAL_Delay(3000);
+		#endif
+5、在main.cn中调用 回调函数
+/* USER CODE BEGIN 4 */
+void HAL_UART_TxHalfCpltCallback(UART_HandleTypeDef *huart)
+{
+	#ifdef UART1_IRQ
+	HAL_UART_Transmit(&huart1, &Rdata, 1,0xff);
+	HAL_UART_Receive_IT(&huart1, &Rdata, 1);
+	#endif
+}
+/* USER CODE END 4 */
+6、中断不受延时影响。
+
+DMA模式 （与IRQ类似）
+1、	在以上模式上，配置DMA，add—USART_RX—mode：Circular  。
+add—USART_TX—mode：normal –ok 生成代码。
+2、	宏定义
+#define UART1_DMA
+uint8_t TdataDMA[]={"welcome to UART1_DMA"};
+3、
+	#ifdef UART1_DMA
+   if(HAL_UART_Receive_DMA(&huart1, &Rdata, 1)==HAL_OK)
+	{
+	    HAL_UART_Transmit_DMA(&huart1, TdataDMA,sizeof(TdataDMA));
+	}
+    #endif
+4、
+#ifdef UART1_DMA
+		HAL_GPIO_TogglePin(LED_GPIO_Port,LED_Pin);
+	  printf("URAT1_DMA test!\r\n ");
+		HAL_Delay(3000);
+		#endif
+5、
+#ifdef UART1_DMA
+	HAL_UART_Transmit_DMA(&huart1, &Rdata, 1); //中断特别快，容易丢失数据
+	HAL_UART_Receive_DMA(&huart1, &Rdata, 1);
+	#endif
+HAL_UART_Transmit_DMA和HAL_UART_Receive_DMA优先级一样，同时会产生冲突。
+
+修改HAL_UART_Transmit优先级比HAL_UART_Receive_DMA低，运行速度慢，
+#ifdef UART1_DMA
+	HAL_UART_Transmit(&huart1, &Rdata, 1,0xff);
+	HAL_UART_Receive_DMA(&huart1, &Rdata, 1);
+	#endif
+6、中断不受延时影响
+
+
+
+
